@@ -61,7 +61,7 @@ class Window(QtWidgets.QMainWindow):
         return tmp_label
 
     def setup_dynamic_label(self, module):
-        # TODO Check module has all four elements or print "Error in file: <filename>"
+        # TODO Better dynamics of what could be missing. Don't hinder for everything missing. Hovertext for settings button as logs?
         tmp_label = QtWidgets.QLabel()
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
         tmp_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -78,6 +78,7 @@ class Window(QtWidgets.QMainWindow):
         else:
             tmp_label.setText(module.MODULE_FILE_NAME)
             tmp_label.setToolTip("One or more of the varaibles NAME, TAGS or DESCRIPTION are missing")
+            print ("Missing one or more of the varaibles NAME, TAGS or DESCRIPTION in " + module.MODULE_FILE_NAME)
 
         return tmp_label
 
@@ -99,18 +100,28 @@ class Window(QtWidgets.QMainWindow):
                     break
             name = widget.text()
 
+            # Convert label name to the module. Check for NAME duplications for the called label and remember the fall back method when there is no NAME.
             try:
-                label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name][0]
+                label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name]
+                if len(label_text_to_file_name) > 1:
+                    self.dialogCritical("Name collision", "Name collision found for the name: " + name + "\nFiles: " + str([i+".py" for i in label_text_to_file_name]))
+                    return
+                label_text_to_file_name = label_text_to_file_name[0]
             except:
                 label_text_to_file_name = name[:-3]
 
+            # Run main, display warning if not found
             if callable(getattr(self.module_storage[label_text_to_file_name], "main", None)):
                 self.module_storage[label_text_to_file_name].main()
                 if getSettings()["close_on_run"]:
                     self.close()
             else:
-                print ("Error in file: " + self.module_storage[label_text_to_file_name].MODULE_FILE_NAME + "\nNo main() method found to run")
+                self.dialogCritical("No main()", "Error in file: " + self.module_storage[label_text_to_file_name].MODULE_FILE_NAME + "\nNo main() method found to run")
 
+    def dialogCritical(self, title, message):
+        msgBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, title, message, QtWidgets.QMessageBox.NoButton, self)
+        msgBox.setStyleSheet("QPushButton { color: white; border: 1px solid #ffffff; padding: 7px;} QPushButton:hover {border: 1px solid #ffaa00; color: #ffaa00;}")
+        msgBox.exec_()
 
 def getSettings():
     with open('settings.json') as data_file:
