@@ -63,16 +63,22 @@ class Window(QtWidgets.QMainWindow):
     def setup_dynamic_label(self, module):
         # TODO Check module has all four elements or print "Error in file: <filename>"
         tmp_label = QtWidgets.QLabel()
-        tmp_label.setText(module.NAME)
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
         tmp_label.setAlignment(QtCore.Qt.AlignCenter)
         tmp_label.setWordWrap(True)
         tmp_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         tmp_label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        tmp_label.setToolTip("Runs: 0\nTags: " + str(module.TAGS) + "\nDescription: " + module.DESCRIPTION)
         tmp_label.setFixedHeight(40)
         tmp_label.setFixedWidth(self.width() - 20)
         tmp_label.mousePressEvent = self.labelClickEvent
+
+        if getattr(module, "NAME", False) and getattr(module, "TAGS", False) and getattr(module, "DESCRIPTION", False):
+            tmp_label.setText(module.NAME)
+            tmp_label.setToolTip("Runs: 0\nTags: " + str(module.TAGS) + "\nDescription: " + module.DESCRIPTION)
+        else:
+            tmp_label.setText(module.MODULE_FILE_NAME)
+            tmp_label.setToolTip("One or more of the varaibles NAME, TAGS or DESCRIPTION are missing")
+
         return tmp_label
 
     def closeButtonAction(self, event):
@@ -93,7 +99,10 @@ class Window(QtWidgets.QMainWindow):
                     break
             name = widget.text()
 
-            label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name][0]
+            try:
+                label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name][0]
+            except:
+                label_text_to_file_name = name[:-3]
 
             if callable(getattr(self.module_storage[label_text_to_file_name], "main", None)):
                 self.module_storage[label_text_to_file_name].main()
