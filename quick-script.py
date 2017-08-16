@@ -61,6 +61,7 @@ class Window(QtWidgets.QMainWindow):
         return tmp_label
 
     def setup_dynamic_label(self, module):
+        # TODO Check module has all four elements or print "Error in file: <filename>"
         tmp_label = QtWidgets.QLabel()
         tmp_label.setText(module.NAME)
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
@@ -91,10 +92,15 @@ class Window(QtWidgets.QMainWindow):
                 if widget.mapToGlobal(event.pos()) == event.globalPos():
                     break
             name = widget.text()
+
             label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name][0]
-            self.module_storage[label_text_to_file_name].main()
-            if getSettings()["close_on_run"]:
-                self.close()
+
+            if callable(getattr(self.module_storage[label_text_to_file_name], "main", None)):
+                self.module_storage[label_text_to_file_name].main()
+                if getSettings()["close_on_run"]:
+                    self.close()
+            else:
+                print ("Error in file: " + self.module_storage[label_text_to_file_name].MODULE_FILE_NAME + "\nNo main() method found to run")
 
 
 def getSettings():
@@ -115,8 +121,7 @@ if __name__ == "__main__":
     module_storage = {}
     for module in module_index:
         module_storage[module] = importlib.import_module("scripts." + module)
-
-    module_storage_rename_layer = {}
+        module_storage[module].MODULE_FILE_NAME = module + ".py"
 
     app = QtWidgets.QApplication(sys.argv)
     window = Window(module_storage)
