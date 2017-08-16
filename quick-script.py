@@ -61,7 +61,16 @@ class Window(QtWidgets.QMainWindow):
         return tmp_label
 
     def setup_dynamic_label(self, module):
-        # TODO Better dynamics of what could be missing. Don't hinder for everything missing. Hovertext for settings button as logs?
+        # Check if NAME exists and set to filename if not
+        if getattr(module, "NAME", False):
+            label_name = module.NAME
+        else:
+            label_name = module.MODULE_FILE_NAME
+
+        label_tooltip = "Runs: 0" # TODO Run check (later implimentation)
+        label_tooltip += "\nTags: " + str(getattr(module, "TAGS", "None"))
+        label_tooltip += "\nDescription: " + getattr(module, "DESCRIPTION", "None")
+
         tmp_label = QtWidgets.QLabel()
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
         tmp_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -71,14 +80,8 @@ class Window(QtWidgets.QMainWindow):
         tmp_label.setFixedHeight(40)
         tmp_label.setFixedWidth(self.width() - 20)
         tmp_label.mousePressEvent = self.labelClickEvent
-
-        if getattr(module, "NAME", False) and getattr(module, "TAGS", False) and getattr(module, "DESCRIPTION", False):
-            tmp_label.setText(module.NAME)
-            tmp_label.setToolTip("Runs: 0\nTags: " + str(module.TAGS) + "\nDescription: " + module.DESCRIPTION)
-        else:
-            tmp_label.setText(module.MODULE_FILE_NAME)
-            tmp_label.setToolTip("One or more of the varaibles NAME, TAGS or DESCRIPTION are missing")
-            print ("Missing one or more of the varaibles NAME, TAGS or DESCRIPTION in " + module.MODULE_FILE_NAME)
+        tmp_label.setText(label_name)
+        tmp_label.setToolTip(label_tooltip)
 
         return tmp_label
 
