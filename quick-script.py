@@ -42,7 +42,7 @@ class Window(QtWidgets.QMainWindow):
         files = [i for i in self.module_storage]
         self.file_labels = {}
         for file in files:
-            self.file_labels[file] = self.setup_dynamic_label(file, ("File: " + file))
+            self.file_labels[file] = self.setup_dynamic_label(self.module_storage[file])
             self.form.addRow(self.file_labels[file])
 
         # Grouping
@@ -60,15 +60,15 @@ class Window(QtWidgets.QMainWindow):
         tmp_label.setAlignment(QtCore.Qt.AlignCenter)
         return tmp_label
 
-    def setup_dynamic_label(self, text, tool_tip):
+    def setup_dynamic_label(self, module):
         tmp_label = QtWidgets.QLabel()
-        tmp_label.setText(text)
+        tmp_label.setText(module.NAME)
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
         tmp_label.setAlignment(QtCore.Qt.AlignCenter)
         tmp_label.setWordWrap(True)
         tmp_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         tmp_label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        tmp_label.setToolTip(tool_tip)
+        tmp_label.setToolTip("Runs: 0\nTags: " + str(module.TAGS) + "\nDescription: " + module.DESCRIPTION)
         tmp_label.setFixedHeight(40)
         tmp_label.setFixedWidth(self.width() - 20)
         tmp_label.mousePressEvent = self.labelClickEvent
@@ -91,7 +91,8 @@ class Window(QtWidgets.QMainWindow):
                 if widget.mapToGlobal(event.pos()) == event.globalPos():
                     break
             name = widget.text()
-            self.module_storage[name].main()
+            label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name][0]
+            self.module_storage[label_text_to_file_name].main()
             if getSettings()["close_on_run"]:
                 self.close()
 
@@ -114,6 +115,8 @@ if __name__ == "__main__":
     module_storage = {}
     for module in module_index:
         module_storage[module] = importlib.import_module("scripts." + module)
+
+    module_storage_rename_layer = {}
 
     app = QtWidgets.QApplication(sys.argv)
     window = Window(module_storage)
