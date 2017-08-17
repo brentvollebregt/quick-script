@@ -94,11 +94,8 @@ class Window(QtWidgets.QMainWindow):
 
     def labelClickEvent(self, event):
         if event.button() == 1:
-            widgets = self.groupbox.children()
+            widgets = self.groupbox.findChildren(QtWidgets.QLabel)
             for widget in widgets:
-                hasGeo = getattr(widget, "mapToGlobal", None)
-                if not callable(hasGeo):
-                    continue
                 if widget.mapToGlobal(event.pos()) == event.globalPos():
                     break
             name = widget.text()

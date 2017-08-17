@@ -1,4 +1,4 @@
-NAME = "SCRIPT2"
+NAME = "SCRIPT1"
 DESCRIPTION = "Run script2"
 TAGS = ["2"]
 
