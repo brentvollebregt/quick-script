@@ -61,15 +61,7 @@ class Window(QtWidgets.QMainWindow):
         return tmp_label
 
     def setup_dynamic_label(self, module):
-        # Check if NAME exists and set to filename if not
-        if getattr(module, "NAME", False):
-            label_name = module.NAME
-        else:
-            label_name = module.MODULE_FILE_NAME
-
-        label_tooltip = "Runs: 0" # TODO Run check (later implimentation)
-        label_tooltip += "\nTags: " + str(getattr(module, "TAGS", "None"))
-        label_tooltip += "\nDescription: " + getattr(module, "DESCRIPTION", "None")
+        label_name, label_tooltip = self.getLabelContent(module)
 
         tmp_label = QtWidgets.QLabel()
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
@@ -84,6 +76,32 @@ class Window(QtWidgets.QMainWindow):
         tmp_label.setToolTip(label_tooltip)
 
         return tmp_label
+
+    def getLabelContent(self, module):
+        if getattr(module, "NAME", False):
+            label_name = module.NAME
+        else:
+            label_name = module.MODULE_FILE_NAME
+
+        label_tooltip = "Runs: " + str(self.getModuleRuns(module))
+        label_tooltip += "\nTags: " + str(getattr(module, "TAGS", "None"))
+        label_tooltip += "\nDescription: " + getattr(module, "DESCRIPTION", "None")
+
+        return label_name, label_tooltip
+
+    def getModuleRuns(self, module):
+        settings = getSettings()
+        if module.MODULE_FILE_NAME in settings["run_count"]:
+            return settings["run_count"][module.MODULE_FILE_NAME]
+        else:
+            settings["run_count"][module.MODULE_FILE_NAME] = 0
+            setSettings(settings)
+            return 0
+
+    def addModuleRun(self, module):
+        settings = getSettings()
+        settings["run_count"][module.MODULE_FILE_NAME] += 1
+        setSettings(settings)
 
     def closeButtonAction(self, event):
         if event.button() == 1:
@@ -113,6 +131,7 @@ class Window(QtWidgets.QMainWindow):
             # Run main, display warning if not found
             if callable(getattr(self.module_storage[label_text_to_file_name], "main", None)):
                 self.module_storage[label_text_to_file_name].main()
+                self.addModuleRun(self.module_storage[label_text_to_file_name])
                 if getSettings()["close_on_run"]:
                     self.close()
             else:
