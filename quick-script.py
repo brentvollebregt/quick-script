@@ -19,6 +19,8 @@ class Window(QtWidgets.QMainWindow):
         self.searchBar.setGeometry(QtCore.QRect(5, 5, 281, 40))
         self.searchBar.setStyleSheet("background: transparent; padding-left: 8px; color: white; font: 15pt; border: 1px solid #ffffff;")
         self.searchBar.setPlaceholderText("Search")
+        self.searchBar.setFocus()
+        self.searchBar.textChanged.connect(self.search)
 
         # Close button setup
         icon = QtGui.QPixmap('images/close.png')
@@ -39,7 +41,7 @@ class Window(QtWidgets.QMainWindow):
         self.scrollArea.setStyleSheet("""QScrollArea {border: 0px;}""")
         self.form = QtWidgets.QFormLayout()
 
-        # Adding dynamic labels
+        # Adding dynamic labels # TODO Sort by runs
         files = [i for i in self.module_storage]
         self.file_labels = {}
         for file in files:
@@ -141,6 +143,10 @@ class Window(QtWidgets.QMainWindow):
                     self.close()
             else:
                 self.dialogCritical("No main()", "Error in file: " + self.module_storage[label_text_to_file_name].MODULE_FILE_NAME + "\nNo main() method found to run")
+
+    def search(self, search_item):
+        # TODO Add search function
+        print (search_item)
 
     def dialogCritical(self, title, message):
         msgBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, title, message, QtWidgets.QMessageBox.NoButton, self)
