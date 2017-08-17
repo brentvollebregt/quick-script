@@ -3,6 +3,7 @@ import sys
 import pkgutil
 import importlib
 import json
+import inspect
 
 class Window(QtWidgets.QMainWindow):
     def __init__(self, module_storage):
@@ -130,7 +131,11 @@ class Window(QtWidgets.QMainWindow):
 
             # Run main, display warning if not found
             if callable(getattr(self.module_storage[label_text_to_file_name], "main", None)):
-                self.module_storage[label_text_to_file_name].main()
+                # Pass the current window to main if the main method takes on parameter
+                if len(inspect.getargspec(self.module_storage[label_text_to_file_name].main).args) == 1:
+                    self.module_storage[label_text_to_file_name].main(self)
+                else:
+                    self.module_storage[label_text_to_file_name].main()
                 self.addModuleRun(self.module_storage[label_text_to_file_name])
                 if getSettings()["close_on_run"]:
                     self.close()

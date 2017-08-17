@@ -36,6 +36,8 @@ def main():
     print ("This is an example script")
     return True
 ```
-The scripts can be named anything as long as they are in /scripts/ with a .py extension.
+The scripts can be named anything as long as they are in /scripts/ with a .py extension. The script does not have to have name, description or tags, they will just be rendered as none.
+
+A parameter can be added to the main() method and as long as their is only one parameter required, the window class will be passed to main() so the method will now have access to the window and can use functions like dialogCritical().
 
 ## Notes
