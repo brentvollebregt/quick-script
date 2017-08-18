@@ -45,5 +45,7 @@ A parameter can be added to the main() method and as long as their is only one p
  - [Save Clipboard to File](cripts/save_clipboard_to_file.py): Will request where to save the current clipboard contents to. Supports images and text (will save to .bmp/.txt)
  - [Put IP on Clipboard](cripts/ip_to_clipboard.py): Will set your local IP to the clipboard.
 
+## RunQuickScript.vbs
+This just makes it easier to run the project without a shell. Run RunQuickScript.vbs and the GUI will appear without the annoying shell.
 ## Note
 Currently nothing is attached to the settings button, this may be removed later.
