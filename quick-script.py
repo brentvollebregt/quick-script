@@ -151,21 +151,19 @@ class Window(QtWidgets.QMainWindow):
         else: # Search
             terms = search_item.split(" ")
             for script in self.file_labels:
-                search_match = False
+                search_match = []
                 for term in terms:
                     if term in script + '.py':
-                        search_match = True
-                        break
-                    if any([term in i.lower() for i in getattr(self.file_labels[script].associated_module, "TAGS", "")]):
-                        search_match = True
-                        break
-                    if term in getattr(self.file_labels[script].associated_module, "DESCRIPTION", "").lower():
-                        search_match = True
-                        break
-                    if term in getattr(self.file_labels[script].associated_module, "NAME", "").lower():
-                        search_match = True
-                        break
-                if search_match:
+                        search_match.append(True)
+                    elif any([term in i.lower() for i in getattr(self.file_labels[script].associated_module, "TAGS", "")]):
+                        search_match.append(True)
+                    elif term in getattr(self.file_labels[script].associated_module, "DESCRIPTION", "").lower():
+                        search_match.append(True)
+                    elif term in getattr(self.file_labels[script].associated_module, "NAME", "").lower():
+                        search_match.append(True)
+                    else:
+                        search_match.append(False)
+                if all(search_match):
                     self.file_labels[script].show()
                 else:
                     self.file_labels[script].hide()
