@@ -44,9 +44,16 @@ class Window(QtWidgets.QMainWindow):
         # Adding dynamic labels # TODO Sort by runs
         files = [i for i in self.module_storage]
         self.file_labels = {}
+        order_labels = []
+        # Put files in a list of a pair [#, label]
         for file in files:
             self.file_labels[file] = self.setup_dynamic_label(self.module_storage[file])
-            self.form.addRow(self.file_labels[file])
+            order_labels.append([self.getModuleRuns(self.file_labels[file].associated_module), self.file_labels[file]])
+
+        # Order list by highest to lowest and add to display
+        order_labels_sorted = sorted(order_labels, key=lambda x: x[0])[::-1]
+        for label_pair in order_labels_sorted:
+            self.form.addRow(label_pair[1])
 
         # Grouping
         self.groupbox = QtWidgets.QGroupBox()
@@ -120,7 +127,7 @@ class Window(QtWidgets.QMainWindow):
             for widget in widgets:
                 if widget.mapToGlobal(event.pos()) == event.globalPos():
                     break
-            label = widget # label clicked (object) (label.associated_module)
+            label = widget # label clicked (object)
 
             # Run main, display warning if not found
             if callable(getattr(label.associated_module, "main", None)):
