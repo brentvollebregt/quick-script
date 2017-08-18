@@ -18,6 +18,8 @@ def main(window):
         clipboard = win32clipboard.GetClipboardData()
         win32clipboard.CloseClipboard()
         fileName, _ = QFileDialog.getSaveFileName(window, "QFileDialog.getSaveFileName()", None, "Text Files (*.txt)")
+        if fileName == '':
+            return True
         f = open(fileName, 'w')
         f.write(clipboard)
         f.close()
@@ -25,6 +27,8 @@ def main(window):
     elif win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_BITMAP):
         im = ImageGrab.grabclipboard()
         fileName, _ = QFileDialog.getSaveFileName(window, "QFileDialog.getSaveFileName()", None, "Text Files (*.bmp)")
+        if fileName == '':
+            return True
         im.save(fileName, 'BMP')
 
     return True

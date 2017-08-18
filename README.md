@@ -1,5 +1,4 @@
 # Quick Script
-***Currently in Development***
 
 ## What this is
 This script allows you to save mini scripts made for small tasks and turn them into an easily accessed library. The scripts will appear in a scroll window and on selection they will run and the window will then close (can be configured).
@@ -14,7 +13,7 @@ This script allows you to save mini scripts made for small tasks and turn them i
 
 ## Usage
 To run this the script quick-script.py needs to be run with Python. A window will appear with your scripts. <br/>
-*Image of GUI (Add in later)* <br/>
+![GitHub Logo](http://imgur.com/KhZCUpG)
 
 
 #### Configuration (settings.json)
@@ -42,6 +41,6 @@ The scripts can be named anything as long as they are in /scripts/ with a .py ex
 A parameter can be added to the main() method and as long as their is only one parameter required, the window class will be passed to main() so the method will now have access to the window and can use functions like dialogCritical().
 
 ## Scripts included
- - [Remove edge quotes](quick-script/blob/master/scripts/remove_edge_quotes.py): Will remove edge quotes from the string in your current clipboard (one or both sides)
- - [Save Clipboard to File](quick-script/blob/master/scripts/save_clipboard_to_file.py): Will request where to save the current clipboard contents to. Supports images and text (will save to .bmp/.txt)
+ - [Remove edge quotes](scripts/remove_edge_quotes.py): Will remove edge quotes from the string in your current clipboard (one or both sides)
+ - [Save Clipboard to File](cripts/save_clipboard_to_file.py): Will request where to save the current clipboard contents to. Supports images and text (will save to .bmp/.txt)
  
