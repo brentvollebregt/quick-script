@@ -13,7 +13,7 @@ This script allows you to save mini scripts made for small tasks and turn them i
 
 ## Usage
 To run this the script quick-script.py needs to be run with Python. A window will appear with your scripts. <br/>
-![GitHub Logo](http://imgur.com/KhZCUpG)
+![Main Window](http://i.imgur.com/KhZCUpG.png "Main Window")
 
 
 #### Configuration (settings.json)
@@ -43,4 +43,6 @@ A parameter can be added to the main() method and as long as their is only one p
 ## Scripts included
  - [Remove edge quotes](scripts/remove_edge_quotes.py): Will remove edge quotes from the string in your current clipboard (one or both sides)
  - [Save Clipboard to File](cripts/save_clipboard_to_file.py): Will request where to save the current clipboard contents to. Supports images and text (will save to .bmp/.txt)
- 
+
+## Note
+Currently nothing is attached to the settings button, this may be removed later.
