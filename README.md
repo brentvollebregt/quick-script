@@ -1,5 +1,5 @@
 # Quick Script
-***Currently in Development*** <br/>
+***Currently in Development***
 
 ## What this is
 This script allows you to save mini scripts made for small tasks and turn them into an easily accessed library. The scripts will appear in a scroll window and on selection they will run and the window will then close (can be configured).
@@ -21,7 +21,8 @@ To run this the script quick-script.py needs to be run with Python. A window wil
 This file is located by quick-script.py and keeps a record of settings and script run counts.
 ```json
 {
-    "close_on_run": true
+    "close_on_run": true,
+    "run_count": {}
 }
 ```
 
@@ -41,3 +42,6 @@ The scripts can be named anything as long as they are in /scripts/ with a .py ex
 A parameter can be added to the main() method and as long as their is only one parameter required, the window class will be passed to main() so the method will now have access to the window and can use functions like dialogCritical().
 
 ## Notes
+#### Planned mini scripts (that I will include)
+ - Save image on clipboard (dialog appears to save)
+ - Remove edge quotations from clipboard (helps if you are using PyCharm)

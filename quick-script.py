@@ -64,7 +64,7 @@ class Window(QtWidgets.QMainWindow):
         return tmp_label
 
     def setup_dynamic_label(self, module):
-        label_name, label_tooltip = self.getLabelContent(module)
+        label_name, label_tooltip = self.getModuleContent(module)
 
         tmp_label = QtWidgets.QLabel()
         tmp_label.setStyleSheet("""QLabel {border: 1px solid #ffffff; font: 10pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}""")
@@ -77,10 +77,11 @@ class Window(QtWidgets.QMainWindow):
         tmp_label.mousePressEvent = self.labelClickEvent
         tmp_label.setText(label_name)
         tmp_label.setToolTip(label_tooltip)
+        tmp_label.associated_module = module
 
         return tmp_label
 
-    def getLabelContent(self, module):
+    def getModuleContent(self, module):
         if getattr(module, "NAME", False):
             label_name = module.NAME
         else:
@@ -119,34 +120,48 @@ class Window(QtWidgets.QMainWindow):
             for widget in widgets:
                 if widget.mapToGlobal(event.pos()) == event.globalPos():
                     break
-            name = widget.text()
-
-            # Convert label name to the module. Check for NAME duplications for the called label and remember the fall back method when there is no NAME.
-            try:
-                label_text_to_file_name = [i for i in self.module_storage if self.module_storage[i].NAME == name]
-                if len(label_text_to_file_name) > 1:
-                    self.dialogCritical("Name collision", "Name collision found for the name: " + name + "\nFiles: " + str([i+".py" for i in label_text_to_file_name]))
-                    return
-                label_text_to_file_name = label_text_to_file_name[0]
-            except:
-                label_text_to_file_name = name[:-3]
+            label = widget # label clicked (object) (label.associated_module)
 
             # Run main, display warning if not found
-            if callable(getattr(self.module_storage[label_text_to_file_name], "main", None)):
+            if callable(getattr(label.associated_module, "main", None)):
                 # Pass the current window to main if the main method takes on parameter
-                if len(inspect.getargspec(self.module_storage[label_text_to_file_name].main).args) == 1:
-                    self.module_storage[label_text_to_file_name].main(self)
+                if len(inspect.getargspec(label.associated_module.main).args) == 1:
+                    label.associated_module.main(self)
                 else:
-                    self.module_storage[label_text_to_file_name].main()
-                self.addModuleRun(self.module_storage[label_text_to_file_name])
+                    label.associated_module.main()
+                self.addModuleRun(label.associated_module)
                 if getSettings()["close_on_run"]:
                     self.close()
             else:
-                self.dialogCritical("No main()", "Error in file: " + self.module_storage[label_text_to_file_name].MODULE_FILE_NAME + "\nNo main() method found to run")
+                self.dialogCritical("No main()", "Error in file: " + label.associated_module.MODULE_FILE_NAME + "\nNo main() method found to run")
 
     def search(self, search_item):
-        # TODO Add search function
-        print (search_item)
+        search_item = search_item.lower()
+
+        if search_item == "": # No search
+            for script in self.file_labels:
+                self.file_labels[script].show()
+        else: # Search
+            terms = search_item.split(" ")
+            for script in self.file_labels:
+                search_match = False
+                for term in terms:
+                    if term in script + '.py':
+                        search_match = True
+                        break
+                    if any([term in i.lower() for i in getattr(self.file_labels[script].associated_module, "TAGS", "")]):
+                        search_match = True
+                        break
+                    if term in getattr(self.file_labels[script].associated_module, "DESCRIPTION", "").lower():
+                        search_match = True
+                        break
+                    if term in getattr(self.file_labels[script].associated_module, "NAME", "").lower():
+                        search_match = True
+                        break
+                if search_match:
+                    self.file_labels[script].show()
+                else:
+                    self.file_labels[script].hide()
 
     def dialogCritical(self, title, message):
         msgBox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Critical, title, message, QtWidgets.QMessageBox.NoButton, self)
