@@ -41,7 +41,7 @@ The scripts can be named anything as long as they are in /scripts/ with a .py ex
 
 A parameter can be added to the main() method and as long as their is only one parameter required, the window class will be passed to main() so the method will now have access to the window and can use functions like dialogCritical().
 
-## Notes
-#### Planned mini scripts (that I will include)
- - Save image on clipboard (dialog appears to save)
- - Remove edge quotations from clipboard (helps if you are using PyCharm)
+## Scripts included
+ - [Remove edge quotes](quick-script/blob/master/scripts/remove_edge_quotes.py): Will remove edge quotes from the string in your current clipboard (one or both sides)
+ - [Save Clipboard to File](quick-script/blob/master/scripts/save_clipboard_to_file.py): Will request where to save the current clipboard contents to. Supports images and text (will save to .bmp/.txt)
+ 

@@ -1,8 +1,4 @@
 {
     "close_on_run": true,
-    "run_count": {
-        "script1.py": 2,
-        "script2.py": 5,
-        "script3.py": 3
-    }
+    "run_count": {}
 }
