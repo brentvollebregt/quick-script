@@ -1,5 +1,5 @@
 NAME = "Remove edge quotes"
-DESCRIPTION = "Removed both double and single quotes from the beginning and the end of your current clip board"
+DESCRIPTION = "Removed both double and single quotes from the beginning and the end of your current clipboard"
 TAGS = ["Quotes", "Clipboard"]
 
 def main(window):
