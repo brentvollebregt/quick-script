@@ -45,7 +45,7 @@ class Window(QtWidgets.QMainWindow):
         self.scrollArea.setStyleSheet("""QScrollArea {border: 0px;}""")
         self.form = QtWidgets.QFormLayout()
 
-        # Adding dynamic labels # TODO Sort by runs
+        # Adding dynamic labels
         files = [i for i in self.module_storage]
         self.file_labels = {}
         order_labels = []
@@ -123,6 +123,8 @@ class Window(QtWidgets.QMainWindow):
             self.close()
 
     def settingsButtonAction(self, event):
+        settings_window = SettingsWindow()
+        settings_window.show()
         pass
 
     def labelClickEvent(self, event):
@@ -177,6 +179,79 @@ class Window(QtWidgets.QMainWindow):
         msgBox.setStyleSheet("QPushButton { color: white; border: 1px solid #ffffff; padding: 7px;} QPushButton:hover {border: 1px solid #ffaa00; color: #ffaa00;}")
         msgBox.exec_()
 
+class SettingsWindow(QtWidgets.QWidget):
+    def __init__(self):
+        QtWidgets.QWidget.__init__(self)
+        self.setFixedSize(285, 70)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        self.setStyleSheet("QWidget {color: #b1b1b1; background-color: #323232; border: 0px;}")
+        self.setWindowOpacity(1)
+        self.centralwidget = QtWidgets.QWidget(self)
+
+        self.clear_counts_button = self.createLabel(QtCore.QRect(5, 5, 60, 60), "Clear Counts")
+        self.clear_counts_button.mousePressEvent = self.clear_counts
+
+        self.close_on_run_button = self.createLabel(QtCore.QRect(75, 5, 60, 60), "Close on Run")
+        self.close_on_run_button.mousePressEvent = self.close_on_run
+        self.close_on_run_background()
+
+        self.stay_on_top_button = self.createLabel(QtCore.QRect(145, 5, 60, 60), "Stay On Top")
+        self.stay_on_top_button.mousePressEvent = self.stay_on_top
+        self.stay_on_top_background()
+
+        icon = QtGui.QPixmap('images/close.png')
+        icon = icon.scaled(40, 40, QtCore.Qt.KeepAspectRatio)
+        self.closeLabel = QtWidgets.QLabel(self.centralwidget)
+        self.closeLabel.setGeometry(QtCore.QRect(self.width() - 70, 5, 60, 60))
+        self.closeLabel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.closeLabel.setStyleSheet("QLabel {border: 1px solid #ffffff; font: 8pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}")
+        self.closeLabel.setPixmap(icon)
+        self.closeLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.closeLabel.mousePressEvent = self.closeButtonAction
+
+    def createLabel(self, position, text):
+        tmp_label = QtWidgets.QLabel(self.centralwidget)
+        tmp_label.setGeometry(position)
+        tmp_label.setStyleSheet("QLabel {border: 1px solid #ffffff; font: 8pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}")
+        tmp_label.setText(text)
+        tmp_label.setWordWrap(True)
+        tmp_label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        tmp_label.setAlignment(QtCore.Qt.AlignCenter)
+        return tmp_label
+
+    def clear_counts(self, e):
+        data = getSettings()
+        data["run_count"] = {}
+        setSettings(data)
+
+    def close_on_run(self, e):
+        data = getSettings()
+        data["close_on_run"] = not data["close_on_run"]
+        setSettings(data)
+        self.close_on_run_background()
+
+    def close_on_run_background(self):
+        if getSettings()["close_on_run"]:
+            self.close_on_run_button.setStyleSheet("QLabel:hover {border: 1px solid #ffffff; font: 8pt; color: white;} QLabel {border: 2px solid #ffaa00; color: #ffaa00;}")
+        else:
+            self.close_on_run_button.setStyleSheet("QLabel {border: 1px solid #ffffff; font: 8pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}")
+
+    def stay_on_top(self, e):
+        data = getSettings()
+        data["stay_on_top"] = not data["stay_on_top"]
+        setSettings(data)
+        self.stay_on_top_background()
+
+    def stay_on_top_background(self):
+        if getSettings()["stay_on_top"]:
+            self.stay_on_top_button.setStyleSheet("QLabel:hover {border: 1px solid #ffffff; font: 8pt; color: white;} QLabel {border: 2px solid #ffaa00; color: #ffaa00;}")
+        else:
+            self.stay_on_top_button.setStyleSheet("QLabel {border: 1px solid #ffffff; font: 8pt; color: white;} QLabel:hover {border: 2px solid #ffaa00; color: #ffaa00;}")
+
+    def closeButtonAction(self, e):
+        if e.button() == 1:
+            self.close()
+
 def getSettings():
     with open('settings.json') as data_file:
         return json.load(data_file)
@@ -201,4 +276,3 @@ if __name__ == "__main__":
     window = Window(module_storage)
     window.show()
     sys.exit(app.exec_())
-

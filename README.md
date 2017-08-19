@@ -21,7 +21,9 @@ This file is located by quick-script.py and keeps a record of settings and scrip
 ```json
 {
     "close_on_run": true,
-    "run_count": {}
+    "run_count": {},
+    "stay_on_top": true,
+    "window_height": 400
 }
 ```
 
@@ -47,5 +49,3 @@ A parameter can be added to the main() method and as long as their is only one p
 
 ## RunQuickScript.vbs
 This just makes it easier to run the project without a shell. Run RunQuickScript.vbs and the GUI will appear without the annoying shell.
-## Note
-Currently nothing is attached to the settings button, this may be removed later.
