@@ -9,8 +9,12 @@ class Window(QtWidgets.QMainWindow):
     def __init__(self, module_storage):
         self.module_storage = module_storage
         QtWidgets.QMainWindow.__init__(self)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setFixedSize(390, 450)
+        self.setWindowOpacity(0.85)
+        if getSettings()["stay_on_top"]:
+            self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        else:
+            self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setFixedSize(390, getSettings()["window_height"])
         self.setStyleSheet("QWidget {color: #b1b1b1; background-color: #323232; border: 0px;}")
         self.centralwidget = QtWidgets.QWidget(self)
 

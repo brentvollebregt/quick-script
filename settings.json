@@ -1,4 +1,6 @@
 {
     "close_on_run": true,
-    "run_count": {}
+    "run_count": {},
+    "stay_on_top": true,
+    "window_height": 400
 }
