@@ -4,7 +4,7 @@ TAGS = ["IP", "Clipboard"]
 
 import socket
 
-def main():
+def main(window):
     try:
         import win32clipboard
     except:

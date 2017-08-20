@@ -1,4 +1,4 @@
-NAME = "Remove edge quotes"
+NAME = "Remove Edge Quotes"
 DESCRIPTION = "Removed both double and single quotes from the beginning and the end of your current clipboard"
 TAGS = ["Quotes", "Clipboard"]
 

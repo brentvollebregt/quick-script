@@ -200,7 +200,7 @@ class SettingsWindow(QtWidgets.QWidget):
         self.stay_on_top_background()
 
         icon = QtGui.QPixmap('images/close.png')
-        icon = icon.scaled(40, 40, QtCore.Qt.KeepAspectRatio)
+        icon = icon.scaled(50, 50, QtCore.Qt.KeepAspectRatio)
         self.closeLabel = QtWidgets.QLabel(self.centralwidget)
         self.closeLabel.setGeometry(QtCore.QRect(self.width() - 70, 5, 60, 60))
         self.closeLabel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))

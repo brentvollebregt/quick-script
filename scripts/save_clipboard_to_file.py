@@ -1,4 +1,4 @@
-NAME = "Save clipboard to file"
+NAME = "Save Clipboard to File"
 DESCRIPTION = "Will request the user where to store the current text or image contents of the clipboard"
 TAGS = ["Clipboard", "Save", "Image"]
 
