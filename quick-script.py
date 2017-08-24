@@ -139,11 +139,11 @@ class Window(QtWidgets.QMainWindow):
             if callable(getattr(label.associated_module, "main", None)):
                 # Pass the current window to main if the main method takes on parameter
                 if len(inspect.getargspec(label.associated_module.main).args) == 1:
-                    label.associated_module.main(self)
+                    returned = label.associated_module.main(self)
                 else:
-                    label.associated_module.main()
+                    returned = label.associated_module.main()
                 self.addModuleRun(label.associated_module)
-                if getSettings()["close_on_run"]:
+                if getSettings()["close_on_run"] and returned:
                     self.close()
             else:
                 self.dialogCritical("No main()", "Error in file: " + label.associated_module.MODULE_FILE_NAME + "\nNo main() method found to run")

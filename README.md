@@ -8,8 +8,7 @@ This script allows you to save mini scripts made for small tasks and turn them i
  2. Install requirements
     - Python 3 (not tested with other versions currently)
     - PYQT5 (pip install pyqt5)
- 3. Configure settings.json to how you like
- 4. Run quick-script.py (could attach it to a hotkey for easy access)
+ 4. Run quick-script.py / RunQuickScript.vbs (could attach it to a hotkey for easy access)
 
 ## Usage
 To run this the script quick-script.py needs to be run with Python. A window will appear with your scripts. <br/>
@@ -48,6 +47,7 @@ A parameter can be added to the main() method and as long as their is only one p
  - [Put IP on Clipboard](scripts/ip_to_clipboard.py): Will set your local IP to the clipboard.
  - [Restart Windows Exporer](scripts/restart_window_explorer.py): Restarts windows explorer.
  - [UI to PY from Clipboard](scripts/ui_to_py_from_clipboard.py): Gets the current .ui file in the clipboard and will convert it to py using pyuic5 and stores it where the .ui file is located.
+ - [Open Clipboard Directory](open_clipboard_directory.py): Open the location in the clipboard in windows explorer.
 
 ## RunQuickScript.vbs
 This just makes it easier to run the project without a shell. Run RunQuickScript.vbs and the GUI will appear without the annoying shell.

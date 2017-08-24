@@ -6,11 +6,14 @@ def main(window):
     try:
         import win32clipboard
     except:
-        window.dialogCritical("pywin32 needs to be installed to use this\n(pip install pypiwin32)")
+        window.dialogCritical("Cannot import win32clipboard", "pywin32 needs to be installed to use this\n(pip install pypiwin32)")
+        return False
     try:
         from PIL import ImageGrab
     except:
-        window.dialogCritical("PIL needs to be installed to use this\n(pip install Pillow)")
+        window.dialogCritical("Cannot import PIL.ImageGrab", "PIL needs to be installed to use this\n(pip install Pillow)")
+        return False
+
     from PyQt5.QtWidgets import QFileDialog
 
     if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_TEXT):
