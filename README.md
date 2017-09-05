@@ -12,7 +12,8 @@ This script allows you to save mini scripts made for small tasks and turn them i
 
 ## Usage
 To run this the script quick-script.py needs to be run with Python. A window will appear with your scripts. <br/>
-![Main Window](http://i.imgur.com/KhZCUpG.png "Main Window")
+![Main Window](http://i.imgur.com/1PGAOod.png "Main Window")<br/>
+![Settings Window](http://i.imgur.com/p5ZHgn2.png "Settings Window")
 
 
 #### Configuration (settings.json)
