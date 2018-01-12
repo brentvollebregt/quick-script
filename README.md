@@ -48,7 +48,8 @@ A parameter can be added to the main() method and as long as their is only one p
  - [Put IP on Clipboard](scripts/ip_to_clipboard.py): Will set your local IP to the clipboard.
  - [Restart Windows Exporer](scripts/restart_window_explorer.py): Restarts windows explorer.
  - [UI to PY from Clipboard](scripts/ui_to_py_from_clipboard.py): Gets the current .ui file in the clipboard and will convert it to py using pyuic5 and stores it where the .ui file is located.
- - [Open Clipboard Directory](open_clipboard_directory.py): Open the location in the clipboard in windows explorer.
+ - [Open Clipboard Directory](scripts/open_clipboard_directory.py): Open the location in the clipboard in windows explorer.
+ - [Type Clipboard](scripts/type_clipboard.py): Type clipboard contents at a slow pace.
 
 ## RunQuickScript.vbs
 This just makes it easier to run the project without a shell. Run RunQuickScript.vbs and the GUI will appear without the annoying shell.
