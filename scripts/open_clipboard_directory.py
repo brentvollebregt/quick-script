@@ -17,7 +17,7 @@ def main(window):
         win32clipboard.CloseClipboard()
 
         if os.path.exists(clipboard):
-            os.system("start " + clipboard)
+            os.system('%windir%\explorer.exe "' + clipboard + '"')
             return True
 
     return False
